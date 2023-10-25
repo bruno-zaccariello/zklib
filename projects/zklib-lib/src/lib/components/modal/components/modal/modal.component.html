@@ -1,0 +1,11 @@
+<ng-template #modalTemplate>
+
+    <div class="modal">
+        <ng-content select="[header]"></ng-content>
+
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+
+        <ng-content select="[footer]"></ng-content>
+    </div>
+
+</ng-template>
