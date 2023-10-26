@@ -70,6 +70,7 @@ export class ModalService {
     if (!data) {
       this.dialog.closeAll();
     } else {
+      this.dialog.closeAll();
       this.modalsTopic.next(this.CLOSE_EVENT(data));
       this.check();
     }

@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ModalModule } from '../../../zklib-lib/src/lib/components/modal/modal.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormGenericoComponent } from './form-generico/form-generico.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FormGenericoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ModalModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

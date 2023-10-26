@@ -1,11 +1,34 @@
 <ng-template #modalTemplate>
 
     <div class="modal">
-        <ng-content select="[header]"></ng-content>
 
-        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <div class="modal-header">
+            <div class="modal-close">
+                <button (click)="close()" autofocus class="icon-button">
+                    <ng-icon name="jamClose"></ng-icon>
+                </button>
+            </div>
 
-        <ng-content select="[footer]"></ng-content>
+            <div class="modal-title">
+                <h2 *ngIf="_defaultOptions.title">{{ _defaultOptions.title }}</h2>
+                <ng-content *ngIf="!_defaultOptions.title" select="modal-header"></ng-content>
+            </div>
+        </div>
+
+        <div *ngIf="!modalForm && !content" class="modal-body">
+            <ng-content select="modal-body"></ng-content>
+        </div>
+        <div *ngIf="modalForm" class="modal-body">
+            <ng-content select="modal-form"></ng-content>
+        </div>
+        <div *ngIf="!modalForm && content">
+            <ng-container *ngTemplateOutlet="content"></ng-container>
+        </div>
+
+        <div class="modal-footer">
+            <ng-content select="modal-footer"></ng-content>
+        </div>
+
     </div>
 
 </ng-template>

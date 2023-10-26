@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalService } from '../../../zklib-lib/src/lib/components/modal/services/modal.service';
+import { ModalOptions } from 'projects/zklib-lib/src/lib/components/modal/models/modal-options.model';
+import { ModalSizes } from 'projects/zklib-lib/src/lib/components/modal/enums/modal-sizes.enum';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +10,20 @@ import { ModalService } from '../../../zklib-lib/src/lib/components/modal/servic
 })
 export class AppComponent {
   title = 'zklib-demo';
-  modalId = 'my-modal';
+
+  modalBasica = 'modalBasica';
+  modalBasicaOpts: ModalOptions = {
+    width: ModalSizes.width.G,
+    height: ModalSizes.height.M
+  };
+
+  modalForm = 'modalForm';
 
   constructor(
     private readonly modalService: ModalService
   ) {}
 
-  openModal(): void {
-    this.modalService.open(this.modalId);
+  openModal(tag: string): void {
+    this.modalService.open(tag);
   }
 }

@@ -1,5 +1,11 @@
-<zk-modal [modalId]="modalId" [title]="'Meu titulo bacana !'">
-  <ng-template>
+<!-- [title]="'Meu titulo bacana !'" -->
+<zk-modal [modalId]="modalBasica" [options]="modalBasicaOpts">
+
+  <modal-header>
+    <h2>Eita coisa boa Sô !</h2>
+  </modal-header>
+
+  <modal-body>
     <div>
       <h3>Materia legal</h3>
       <p>A vida é uma jornada cheia de surpresas e desafios. Às vezes, nos sentimos perdidos e confusos, mas é
@@ -7,7 +13,27 @@
         seja o caminho, sempre há uma luz no fim do túnel. Mantenha a cabeça erguida e siga em frente, pois o futuro
         reserva grandes coisas para aqueles que persistem e acreditam em si mesmos.</p>
     </div>
-  </ng-template>
+  </modal-body>
+
+  <modal-footer>
+    Por andré caminhoneiro.
+  </modal-footer>
+
 </zk-modal>
 
-<button (click)="openModal()">Clique aqui</button>
+<button (click)="openModal(modalBasica)">Modal Basica</button>
+
+
+<zk-modal [modalId]="modalForm" [title]="'Pesquisa de sentimento'">
+
+  <modal-form>
+    <form-generico></form-generico>
+  </modal-form>
+
+  <modal-footer>
+    Sempre verifique as informações antes de salvar
+  </modal-footer>
+
+</zk-modal>
+
+<button (click)="openModal(modalForm)">Modal Form</button>

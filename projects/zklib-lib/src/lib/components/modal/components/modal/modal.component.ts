@@ -1,4 +1,4 @@
-import { Component, ContentChild, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ComponentRef, ContentChild, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ModalService } from '../../services/modal.service';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { ModalOptions } from '../../models/modal-options.model';
@@ -6,6 +6,9 @@ import { ModalData } from '../../models/modal-data.model';
 import { Subject, takeUntil } from 'rxjs';
 import { ModalEventType } from '../../enums/modal-event-types.enum';
 import { ModalSizes } from '../../enums/modal-sizes.enum';
+import { ModalHeaderComponent } from '../modal-header/modal-header.component';
+import { ModalFooterComponent } from '../modal-footer/modal-footer.component';
+import { ModalFormComponent } from '../modal-form/modal-form.component';
 
 @Component({
   selector: 'zk-modal',
@@ -18,6 +21,9 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   @ContentChild(TemplateRef, { static: true })
   public content!: TemplateRef<any>;
+
+  @ContentChild(ModalFormComponent, { static: true })
+  public modalForm!: TemplateRef<any>;
 
   @ViewChild('modalTemplate', { static: true })
   public modalTemplate!: TemplateRef<any>;
@@ -58,7 +64,7 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(DIALOG_DATA) public data: ModalOptions,
-    private readonly dialogRef: DialogRef<any, any>,
+    private readonly dialogRef: DialogRef,
     private readonly modalService: ModalService
   ) { }
 
@@ -76,7 +82,6 @@ export class ModalComponent implements OnInit, OnDestroy {
             case ModalEventType.OPEN:
               break;
             case ModalEventType.CLOSE:
-              this.close();
               break;
             default:
               break;
@@ -98,7 +103,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   public close() {
-    this.dialogRef.close('ModalContentComponent');
+    this.modalService.close(this.modalId);
   }
 
   ngOnDestroy(): void {
