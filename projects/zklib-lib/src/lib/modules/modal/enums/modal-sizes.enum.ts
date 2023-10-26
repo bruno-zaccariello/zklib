@@ -16,4 +16,9 @@ export class ModalSizes {
         GG: '70vh'
     }
 
+    public static statusModal = {
+        width: '450px',
+        heigh: '100px'
+    }
+
 }

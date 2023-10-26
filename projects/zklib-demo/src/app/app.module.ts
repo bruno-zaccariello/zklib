@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ModalModule } from '../../../zklib-lib/src/lib/components/modal/modal.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormGenericoComponent } from './form-generico/form-generico.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from '../../../zklib-lib/src/public-api';
 
 @NgModule({
   declarations: [

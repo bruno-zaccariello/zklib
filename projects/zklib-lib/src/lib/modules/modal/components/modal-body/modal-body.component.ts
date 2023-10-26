@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'modal-body',
+  selector: 'zk-modal-body',
   templateUrl: './modal-body.component.html'
 })
 export class ModalBodyComponent {

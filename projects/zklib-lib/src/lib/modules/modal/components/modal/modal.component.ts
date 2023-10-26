@@ -1,13 +1,10 @@
-import { Component, ComponentRef, ContentChild, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ModalService } from '../../services/modal.service';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { ModalOptions } from '../../models/modal-options.model';
+import { Component, ContentChild, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { IModalComponent } from '../../interfaces/modal-component.interface';
 import { ModalData } from '../../models/modal-data.model';
-import { Subject, takeUntil } from 'rxjs';
-import { ModalEventType } from '../../enums/modal-event-types.enum';
-import { ModalSizes } from '../../enums/modal-sizes.enum';
-import { ModalHeaderComponent } from '../modal-header/modal-header.component';
-import { ModalFooterComponent } from '../modal-footer/modal-footer.component';
+import { ModalOptions } from '../../models/modal-options.model';
+import { ModalService } from '../../services/modal.service';
 import { ModalFormComponent } from '../modal-form/modal-form.component';
 
 @Component({
@@ -15,7 +12,7 @@ import { ModalFormComponent } from '../modal-form/modal-form.component';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit, OnDestroy {
+export class ModalComponent implements IModalComponent, OnInit, OnDestroy {
 
   private _destroy = new Subject<void>();
 
@@ -47,11 +44,7 @@ export class ModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public _defaultOptions: ModalOptions = {
-    width: ModalSizes.width.PP,
-    minWidth: '450px',
-    minHeight: '200px'
-  }
+  public _defaultOptions: ModalOptions = { ...ModalOptions.default() }
   public _options?: ModalOptions;
 
   public get modalData(): ModalData {
@@ -70,24 +63,6 @@ export class ModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.register();
-    this.startListener();
-  }
-
-  public startListener(): void {
-    this.modalService.listenEvents()
-      .pipe(takeUntil(this._destroy))
-      .subscribe(event => {
-        if (event?.data?.modalId === this.modalId) {
-          switch (event.eventType) {
-            case ModalEventType.OPEN:
-              break;
-            case ModalEventType.CLOSE:
-              break;
-            default:
-              break;
-          }
-        }
-      })
   }
 
   public register(): void {

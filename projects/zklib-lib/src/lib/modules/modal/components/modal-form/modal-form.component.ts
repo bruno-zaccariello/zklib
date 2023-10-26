@@ -2,7 +2,7 @@ import { Component, ContentChild, ElementRef, OnInit } from '@angular/core';
 import { IModalFormComponent } from './modal-form.interface';
 
 @Component({
-  selector: 'modal-form',
+  selector: 'zk-modal-form',
   templateUrl: './modal-form.component.html',
   styleUrls: ['./modal-form.component.css']
 })

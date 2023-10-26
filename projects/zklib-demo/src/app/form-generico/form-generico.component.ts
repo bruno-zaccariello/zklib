@@ -1,6 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { IModalFormComponent } from 'projects/zklib-lib/src/lib/components/modal/components/modal-form/modal-form.interface';
+import { IModalFormComponent } from '../../../../zklib-lib/src/lib/modules/modal/components/modal-form/modal-form.interface';
 
 @Component({
   selector: 'form-generico',

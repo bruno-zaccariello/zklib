@@ -1,0 +1,9 @@
+:host {
+    bottom: 0;
+    right: 5ch;
+    background-color: red;
+}
+
+.modal-status {
+    width: 470px;
+}

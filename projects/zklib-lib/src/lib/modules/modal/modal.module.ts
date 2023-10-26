@@ -9,13 +9,15 @@ import { ModalHeaderComponent } from './components/modal-header/modal-header.com
 import { ModalFooterComponent } from './components/modal-footer/modal-footer.component';
 import { ModalBodyComponent } from './components/modal-body/modal-body.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
+import { ModalDropdownComponent } from './components/modal-dropdown/modal-dropdown.component';
 
 const components = [
   ModalComponent,
   ModalHeaderComponent,
   ModalBodyComponent,
   ModalFooterComponent,
-  ModalFormComponent
+  ModalFormComponent,
+  ModalDropdownComponent
 ]
 
 @NgModule({

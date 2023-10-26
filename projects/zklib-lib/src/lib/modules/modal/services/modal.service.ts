@@ -38,10 +38,7 @@ export class ModalService {
     if (!element) { return; }
     this.dialog.open(
       element,
-      {
-        hasBackdrop: true,
-        ...(modalData?.options as DialogConfig<any, any, any>)
-      }
+      (modalData?.options as DialogConfig<any, any, any>)
     );
   }
 

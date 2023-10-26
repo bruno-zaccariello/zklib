@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { ModalService } from '../../../zklib-lib/src/lib/components/modal/services/modal.service';
-import { ModalOptions } from 'projects/zklib-lib/src/lib/components/modal/models/modal-options.model';
-import { ModalSizes } from 'projects/zklib-lib/src/lib/components/modal/enums/modal-sizes.enum';
+import { ModalSizes } from '../../../zklib-lib/src/lib/modules/modal/enums/modal-sizes.enum';
+import { ModalOptions } from '../../../zklib-lib/src/lib/modules/modal/models/modal-options.model';
+import { ModalService } from '../../../zklib-lib/src/lib/modules/modal/services/modal.service';
+import { ModalDropdownComponent } from '../../../zklib-lib/src/lib/modules/modal/components/modal-dropdown/modal-dropdown.component';
+
 
 @Component({
   selector: 'app-root',
@@ -18,12 +20,14 @@ export class AppComponent {
   };
 
   modalForm = 'modalForm';
+  modalStatus = 'modalStatus';
 
   constructor(
     private readonly modalService: ModalService
-  ) {}
+  ) { }
 
   openModal(tag: string): void {
     this.modalService.open(tag);
   }
+
 }
