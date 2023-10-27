@@ -1,3 +1,31 @@
 <ng-template #modalTemplate>
-  <ng-content></ng-content>
+
+  <div class="modal-dropdown" [class.expanded]="expanded">
+
+    <div class="modal-dropdown-header">
+      <div class="modal-expand">
+        <button (click)="toggleExpansion()" autofocus class="icon-button">
+          <ng-icon name="jamArrowUp"></ng-icon>
+        </button>
+      </div>
+
+      <div class="modal-dropdown-title">
+        <h2 *ngIf="title || options?.title">{{ options?.title ?? title }}</h2>
+        <ng-content *ngIf="!title && !options.title" select="zk-modal-header"></ng-content>
+      </div>
+    </div>
+
+    <div *ngIf="!bodyTemplate" class="modal-body">
+      <ng-content select="zk-modal-body"></ng-content>
+    </div>
+    <div *ngIf="bodyTemplate">
+      <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
+    </div>
+
+    <div class="modal-dropdown-footer">
+      <ng-content select="zk-modal-footer"></ng-content>
+    </div>
+
+  </div>
+
 </ng-template>

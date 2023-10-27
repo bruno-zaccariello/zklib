@@ -1,0 +1,61 @@
+.modal-dropdown {
+    isolation: isolate;
+    width: 100%;
+    height: 5vh;
+    transition: height 300ms ease-out;
+
+    min-height: 100px;
+    padding: 1rem;
+
+    display: grid;
+    grid-template-areas: "header" "body" "footer";
+}
+
+.modal-dropdown:not(.expanded) {
+    grid-template-columns: 1fr 0 0;
+
+    .icon-button ng-icon {
+        transform: rotate(0);
+        transition: ease-in-out 200ms transform;
+    }
+}
+
+.modal-dropdown.expanded {
+    grid-template-rows: 2em 1fr 2em;
+    height: 90vh;
+    transition: height 500ms ease-in-out;
+
+    .icon-button ng-icon {
+        transform: rotate(180deg);
+        transition: ease-in-out 200ms transform;
+    }
+}
+
+.icon-button {
+    all: unset;
+    width: 1.5rem;
+    aspect-ratio: 1;
+
+    cursor: pointer;
+    z-index: 1;
+
+    ng-icon {
+        font-size: 1.5rem;
+    }
+
+    &:focus ng-icon {
+        outline: 1px dashed black;
+    }
+}
+
+.modal-dropdown-header {
+    grid-area: header;
+}
+
+.modal-dropdown-body {
+    grid-area: body;
+}
+
+.modal-dropdown-footer {
+    grid-area: footer;
+}

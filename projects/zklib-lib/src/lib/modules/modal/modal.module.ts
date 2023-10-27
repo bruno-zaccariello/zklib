@@ -4,12 +4,13 @@ import { ModalComponent } from './components/modal/modal.component';
 import { DEFAULT_DIALOG_CONFIG, DIALOG_DATA, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { ModalService } from './services/modal.service';
 import { NgIconsModule } from '@ng-icons/core';
-import { jamClose } from '@ng-icons/jam-icons';
+import { jamClose, jamArrowUp } from '@ng-icons/jam-icons';
 import { ModalHeaderComponent } from './components/modal-header/modal-header.component';
 import { ModalFooterComponent } from './components/modal-footer/modal-footer.component';
 import { ModalBodyComponent } from './components/modal-body/modal-body.component';
 import { ModalFormComponent } from './components/modal-form/modal-form.component';
 import { ModalDropdownComponent } from './components/modal-dropdown/modal-dropdown.component';
+import { ModalDropdownDialogComponent } from './components/modal-dropdown-dialog/modal-dropdown-dialog.component';
 
 const components = [
   ModalComponent,
@@ -17,7 +18,8 @@ const components = [
   ModalBodyComponent,
   ModalFooterComponent,
   ModalFormComponent,
-  ModalDropdownComponent
+  ModalDropdownDialogComponent,
+  ModalDropdownComponent,
 ]
 
 @NgModule({
@@ -26,7 +28,7 @@ const components = [
   ],
   imports: [
     CommonModule,
-    NgIconsModule.withIcons({ jamClose }),
+    NgIconsModule.withIcons({ jamClose, jamArrowUp }),
     DialogModule
   ],
   providers: [

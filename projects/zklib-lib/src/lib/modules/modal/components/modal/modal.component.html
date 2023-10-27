@@ -10,23 +10,23 @@
             </div>
 
             <div class="modal-title">
-                <h2 *ngIf="_defaultOptions.title">{{ _defaultOptions.title }}</h2>
-                <ng-content *ngIf="!_defaultOptions.title" select="modal-header"></ng-content>
+                <h2 *ngIf="title || options?.title">{{ options.title ?? title }}</h2>
+                <ng-content *ngIf="!title && !options.title" select="zk-modal-header"></ng-content>
             </div>
         </div>
 
-        <div *ngIf="!modalForm && !content" class="modal-body">
-            <ng-content select="modal-body"></ng-content>
+        <div *ngIf="!modalForm && !bodyTemplate" class="modal-body">
+            <ng-content select="zk-modal-body"></ng-content>
         </div>
         <div *ngIf="modalForm" class="modal-body">
-            <ng-content select="modal-form"></ng-content>
+            <ng-content select="zk-modal-form"></ng-content>
         </div>
-        <div *ngIf="!modalForm && content">
-            <ng-container *ngTemplateOutlet="content"></ng-container>
+        <div *ngIf="!modalForm && bodyTemplate">
+            <ng-container *ngTemplateOutlet="bodyTemplate"></ng-container>
         </div>
 
         <div class="modal-footer">
-            <ng-content select="modal-footer"></ng-content>
+            <ng-content select="zk-modal-footer"></ng-content>
         </div>
 
     </div>

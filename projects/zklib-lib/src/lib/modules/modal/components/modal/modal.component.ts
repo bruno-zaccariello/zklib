@@ -1,11 +1,12 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { Component, ContentChild, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { DialogRef } from '@angular/cdk/dialog';
+import { Component, ContentChild, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Subject, take, takeUntil } from 'rxjs';
 import { IModalComponent } from '../../interfaces/modal-component.interface';
 import { ModalData } from '../../models/modal-data.model';
 import { ModalOptions } from '../../models/modal-options.model';
 import { ModalService } from '../../services/modal.service';
 import { ModalFormComponent } from '../modal-form/modal-form.component';
+import { ModalEventType } from '../../enums/modal-event-types.enum';
 
 @Component({
   selector: 'zk-modal',
@@ -16,8 +17,14 @@ export class ModalComponent implements IModalComponent, OnInit, OnDestroy {
 
   private _destroy = new Subject<void>();
 
+  @Output('close')
+  private readonly onClose = new EventEmitter<boolean>();
+
+  @Output('open')
+  private readonly onOpen = new EventEmitter<DialogRef>();
+
   @ContentChild(TemplateRef, { static: true })
-  public content!: TemplateRef<any>;
+  public bodyTemplate!: TemplateRef<any>;
 
   @ContentChild(ModalFormComponent, { static: true })
   public modalForm!: TemplateRef<any>;
@@ -29,39 +36,29 @@ export class ModalComponent implements IModalComponent, OnInit, OnDestroy {
   public modalId!: string;
 
   @Input()
-  public set title(title: string) {
-    this._defaultOptions.title = title;
-  }
+  public title!: string;
 
   @Input()
-  public set options(modalOptions: ModalOptions) {
-    this._options = modalOptions;
-  };
-  public get options(): ModalOptions {
-    return {
-      ...this._defaultOptions,
-      ...this._options
-    };
-  }
-
-  public _defaultOptions: ModalOptions = { ...ModalOptions.default() }
-  public _options?: ModalOptions;
+  public options: ModalOptions = {};
 
   public get modalData(): ModalData {
     return {
       modalId: this.modalId,
       modalContent: this.modalTemplate,
-      options: this.options
+      options: {
+        ...ModalOptions.default(),
+        ...this.options
+      }
+
     }
   }
 
   constructor(
-    @Inject(DIALOG_DATA) public data: ModalOptions,
-    private readonly dialogRef: DialogRef,
-    private readonly modalService: ModalService
+    protected readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
+    this.listenEvents();
     this.register();
   }
 
@@ -79,6 +76,23 @@ export class ModalComponent implements IModalComponent, OnInit, OnDestroy {
 
   public close() {
     this.modalService.close(this.modalId);
+  }
+
+  public listenEvents() {
+    this.modalService.listenEvents(this.modalId)
+      .pipe(takeUntil(this._destroy))
+      .subscribe(
+        (event) => {
+          switch (event.eventType) {
+            case ModalEventType.OPEN:
+              this.onOpen.emit();
+              break;
+            case ModalEventType.CLOSE:
+              this.onClose.emit(true);
+              break;
+          }
+        }
+      );
   }
 
   ngOnDestroy(): void {

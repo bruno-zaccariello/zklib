@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, filter, take } from 'rxjs';
 import { ModalData } from '../models/modal-data.model';
 import { ModalEvent } from '../models/modal-event.model';
 import { ModalEventType } from '../enums/modal-event-types.enum';
-import { Dialog, DialogConfig } from '@angular/cdk/dialog';
+import { Dialog, DialogConfig, DialogRef } from '@angular/cdk/dialog';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
@@ -33,13 +33,37 @@ export class ModalService {
     }
   }
 
-  private openModal(modalData: ModalData): void {
+  private openModal(modalData: ModalData): DialogRef | undefined {
     const element = modalData.modalContent;
     if (!element) { return; }
-    this.dialog.open(
-      element,
-      (modalData?.options as DialogConfig<any, any, any>)
-    );
+
+    const dialogRef = this.dialog.open(element, modalData?.options);
+    modalData.dialogRef = dialogRef;
+
+    this.handleDialogRefEvents(modalData);
+    this.modalsTopic.next(this.OPEN_EVENT(modalData));
+    this.check();
+
+    return (dialogRef as DialogRef);
+  }
+
+  private handleDialogRefEvents(modalData: ModalData) {
+    modalData?.dialogRef?.closed
+      .pipe(take(1))
+      .subscribe(() => {
+        this.externallClose(modalData.modalId);
+      });
+  }
+
+  private externallClose(modalId: string): void {
+    const data = this.modalRegistry.get(modalId);
+    const ref = data?.dialogRef;
+    if (!data || !ref) {
+      this.dialog.closeAll();
+    } else {
+      delete data.dialogRef;
+      this.modalsTopic.next(this.CLOSE_EVENT(data));
+    }
   }
 
   register(data: ModalData): void {
@@ -50,24 +74,30 @@ export class ModalService {
     this.modalRegistry.delete(modalId);
   }
 
-  listenEvents(): Observable<ModalEvent> {
-    return this.modalsTopic.asObservable();
+  listenEvents(modalId: string): Observable<ModalEvent> {
+    return this.modalsTopic
+      .asObservable()
+      .pipe(filter(event => event?.data?.modalId === modalId));
   }
 
-  open(modalId: string): void {
+  open(modalId: string): DialogRef | undefined {
     const data = this.modalRegistry.get(modalId);
     if (!data) { return; }
-    this.modalsTopic.next(this.OPEN_EVENT(data));
-    this.openModal(data);
-    this.check();
+
+    if (!data.options?.repeatable && data.dialogRef) {
+      return;
+    }
+    return this.openModal(data);
   }
 
   close(modalId: string): void {
     const data = this.modalRegistry.get(modalId);
-    if (!data) {
+    const ref = data?.dialogRef;
+    if (!data || !ref) {
       this.dialog.closeAll();
     } else {
-      this.dialog.closeAll();
+      ref.close();
+      delete data.dialogRef;
       this.modalsTopic.next(this.CLOSE_EVENT(data));
       this.check();
     }
